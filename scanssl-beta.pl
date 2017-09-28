@@ -6,7 +6,16 @@ use DateTime;
 
 my $timestamp = localtime(time);
 # You need to add your own servers in this array below
-my @ips = ('reglund.com','example.com');
+my @ips;# ('reglund.com','example.com');
+
+my $filename = 'hosts.txt';
+open(my $fh, '<:encoding(UTF-8)', $filename)
+    or die "Could not open file '$filename' $!";
+ 
+while (my $row = <$fh>) {
+    chomp $row;
+    push(@ips,$row);
+}
 
 # This command assumes that you have a git folder in your home dir
 # and have checked out the ssllabs-scan repo into it
