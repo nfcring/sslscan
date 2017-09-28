@@ -4,26 +4,32 @@ use JSON qw( decode_json );
 use Date::Parse;
 use DateTime;
 
+my $start_run = time();
 my $timestamp = localtime(time);
-# You need to add your own servers in this array below
-my @ips;# ('reglund.com','example.com');
+# You need to add your own servers in hosts.txt file
+my @ips; 
+my $hosts_filename = 'hosts.txt';
 
-my $filename = 'hosts.txt';
-open(my $fh, '<:encoding(UTF-8)', $filename)
-    or die "Could not open file '$filename' $!";
+open(my $fh, '<:encoding(UTF-8)', $hosts_filename)
+    or die "Could not open file '$hosts_filename' $!";
  
 while (my $row = <$fh>) {
     chomp $row;
     push(@ips,$row);
 }
 
+close $fh;
+
 # This command assumes that you have a git folder in your home dir
 # and have checked out the ssllabs-scan repo into it
 system("cd ~/git/ssllabs-scan/ && git pull && rm ./ssllabs-scan && go build ssllabs-scan.go");
 
 # Choose to where you want the html file to go
-my $filename = '/where/you/want/the/html/sslscan.html';
-open(my $fh, '>', $filename) or die "Could not open file '$filename' $!";
+my $filename_tmp = 'sslscan_tmp.html';
+my $filename_finished = 'sslscan.html';
+
+open($fh, '>', $filename_tmp)
+    or die "Could not open file '$filename_tmp' $!";
 
 my $html_top = << "END";
 <html>
@@ -36,18 +42,19 @@ END
 
 print $fh $html_top;
 
-chmod 0644,$filename;
+chmod 0644,$filename_tmp;
 
 foreach(@ips){
     my $result = `~/git/ssllabs-scan/ssllabs-scan $_`;
     my $decoded = decode_json($result);
-    my $jsonfilename = "/uio/kant/div-ceres-u1/asbjornt/www_docs/json/$_.json";
+    my $jsonfilename = "json/$_.json";
     
-    open(my $jfh, '>', $jsonfilename) or die "Could not open file '$jsonfilename' $!";
+    open(my $jfh, '>', $jsonfilename)
+	or die "Could not open file '$jsonfilename' $!";
    
     print $jfh $result;
-
     close $jfh;
+
     chmod 0644,$jsonfilename;
     
     my ($host, $grade, $notafter, $date_class);
@@ -85,20 +92,33 @@ foreach(@ips){
 # Below you need to enter the url to where you saved your json files 
     my $html_middle = << "END";
     <tr>
-	<td><a href="http://your/path/to/the/json/$_.json">$host</a></td>
+	<td><a href="$jsonfilename">$host</a></td>
 	<td><span class="$class">$grade</span></td>
 	<td><span class="$date_class">$notafter</span></td>
     </tr>
 END
 print $fh $html_middle;
 }
+
+my $end_run = time();
+my $run_time = ($end_run - $start_run)/60;
+
 my $html_bottom = << "END";
      <tr>
-       <td colspan="3">Last updated: $timestamp</td>
+       <td colspan="3">Last updated: $timestamp, total runtime: $run_time minutes</\
+td>
      </tr>
+    <tr>
+       <td colspan="3">Based on ssllabs.com</td>
+    </tr>
    </table>
   </body>
 </html>
 END
+
 print $fh $html_bottom;
 close $fh;
+
+#Copy working file to prod file
+use File::Copy;
+move($filename_tmp,$filename_finished);
