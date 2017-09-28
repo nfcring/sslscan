@@ -45,7 +45,8 @@ print $fh $html_top;
 chmod 0644,$filename_tmp;
 
 foreach(@ips){
-    my $result = `~/git/ssllabs-scan/ssllabs-scan $_`;
+    die("You will have to set the correct path to ssllabs-scan folder next, then remove this die statement");
+    my $result = `/path/to/your/ssllabs-scan/ssllabs-scan $_`; #Enter your own path
     my $decoded = decode_json($result);
     my $jsonfilename = "json/$_.json";
     
