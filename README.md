@@ -16,7 +16,8 @@ open it in a browser
 8. Remember that we work with two repositories to make this work. The
 one from SSLLABS which has a name ssllabs-scan, and my repository is
 named sslscan. This might be a bit confusing. The sslscan should be
-the folder from where you run the code.
+the folder from where you run the code. You will need to edit the
+scanssl-beta.pl to set the correct path to your ssllabs-scan directory.
 
 Good luck
 
