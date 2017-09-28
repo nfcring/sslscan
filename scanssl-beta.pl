@@ -101,7 +101,8 @@ print $fh $html_middle;
 }
 
 my $end_run = time();
-my $run_time = ($end_run - $start_run)/60;
+
+my $run_time = sprintf("%.1f",($end_run - $start_run)/60);
 
 my $html_bottom = << "END";
      <tr>
