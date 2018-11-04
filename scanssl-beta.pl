@@ -22,7 +22,7 @@ close $fh;
 
 # This command assumes that you have a git folder in your home dir
 # and have checked out the ssllabs-scan repo into it
-system("cd ~/git/ssllabs-scan/ && git pull && rm ./ssllabs-scan && go build ssllabs-scan.go");
+system("cd ~/git/ssllabs-scan/ && git pull && rm ./ssllabs-scan-v3 && go build ssllabs-scan-v3.go");
 
 # Choose to where you want the html file to go
 my $filename_tmp = 'sslscan_tmp.html';
@@ -45,7 +45,7 @@ print $fh $html_top;
 chmod 0644,$filename_tmp;
 
 foreach(@ips){    
-    my $result = `~/git/ssllabs-scan/ssllabs-scan $_`; #Enter your own path
+    my $result = `~/git/ssllabs-scan/ssllabs-scan-v3 $_`; #Enter your own path
     my $decoded = decode_json($result);
     my $jsonfilename = "json/$_.json";
     
