@@ -64,7 +64,7 @@ foreach(@ips){
 	$host = $decoded->[0]{host};
 	$grade = $decoded->[0]{endpoints}[0]{grade};
 	my $timestampDateTime = DateTime->from_epoch( epoch => str2time ( $timestamp ));
-	my $notafterDateTime = DateTime->from_epoch( epoch => $decoded->[0]{endpoints}[0]{details}{cert}{notAfter}/1000);
+	my $notafterDateTime = DateTime->from_epoch( epoch => $decoded->[0]{certs}[0]{notAfter}/1000);
 	$notafterDateTime->set_time_zone('CET');
 	$notafter = $notafterDateTime->strftime('%Y-%m-%d');
 	my $diff = $notafterDateTime->subtract_datetime($timestampDateTime);
