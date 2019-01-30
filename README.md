@@ -1,5 +1,14 @@
-# sslscan
-A proof of concept perl script for scanning your TLS certificates
+# AUTHOR
+Asbjorn Reglund Thorsen 
+Mail: reglund.thorsen@gmail.com
+Twitter: @fuzzerman
+Blog: https://reglund.com
+
+# LICENSES
+sslscan has no license :-) Enjoy!
+
+# SSLSCAN
+A proof of concept perl script for scanning your TLS certificates.
 
 1. You need to change the hosts.txt, and add your own hosts. One on
 each line
@@ -19,5 +28,5 @@ named sslscan. This might be a bit confusing. The sslscan should be
 the folder from where you run the code. You will need to edit the
 scanssl-beta.pl to set the correct path to your ssllabs-scan directory.
 
-Good luck
+Happy scanning!
 
