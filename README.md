@@ -1,7 +1,10 @@
 # AUTHOR
-Asbjorn Reglund Thorsen 
+Asbjorn Reglund Thorsen
+
 Mail: reglund.thorsen@gmail.com
+
 Twitter: @fuzzerman
+
 Blog: https://reglund.com
 
 # LICENSES
